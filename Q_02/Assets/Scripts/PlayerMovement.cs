@@ -28,6 +28,8 @@ public class PlayerMovement : MonoBehaviour
         direction.z = Input.GetAxisRaw("Vertical");
 
         if (direction == Vector3.zero) return;
+        // 대각선 속도를 일정하게 맞추기 위해 정규화 작업을 해줌
+        direction.Normalize();
         
         transform.Translate(_status.MoveSpeed * Time.deltaTime * direction);
     }
