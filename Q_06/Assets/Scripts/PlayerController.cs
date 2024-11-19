@@ -6,7 +6,7 @@ public class PlayerController : MonoBehaviour
 {
     private Gun _gun;
     
-    [SerializeField] private Transform _muzzlePoint;
+    [SerializeField] public Transform _muzzlePoint;
     [SerializeField] private float _verticalRotateRange;
     [SerializeField] private float _rotateSpeed;
     [SerializeField] private float _moveSpeed;
@@ -63,7 +63,7 @@ public class PlayerController : MonoBehaviour
     {
         if (input.x != 0)
         {
-            transform.Rotate(Vector3.up, input.x * _rotateSpeed * Time.deltaTime);
+            transform.Rotate(Vector3.up, input.x * _rotateSpeed * Time.deltaTime);   
         }
         
         if (input.y != 0)
@@ -73,7 +73,8 @@ public class PlayerController : MonoBehaviour
                 -_verticalRotateRange, 
                 _verticalRotateRange
                 );
-            _muzzlePoint.localRotation = Quaternion.Euler(_verticalRotation, 0f, 0f);
+
+            Camera.main.transform.localRotation = Quaternion.Euler(_verticalRotation, 0f, 0f);
         }
     }
 
