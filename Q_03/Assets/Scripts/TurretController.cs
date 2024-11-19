@@ -25,6 +25,14 @@ public class TurretController : MonoBehaviour
         }
     }
 
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            StopCoroutine(_coroutine);
+        }
+    }
+
     private void Init()
     {
         _coroutine = null;

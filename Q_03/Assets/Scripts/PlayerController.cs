@@ -22,6 +22,7 @@ public class PlayerController : MonoBehaviour
     
     public void TakeHit(int damage)
     {
+        Debug.Log("µ¥¹ÌÁöaaa");
         Hp -= damage;
 
         if (Hp <= 0)
@@ -33,6 +34,12 @@ public class PlayerController : MonoBehaviour
     public void Die()
     {
         _audio.Play();
+        StartCoroutine(AudioRoutine());
+    }
+
+    IEnumerator AudioRoutine()
+    {
+        yield return new WaitForSeconds(1);
         gameObject.SetActive(false);
     }
 }

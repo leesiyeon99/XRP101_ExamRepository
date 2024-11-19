@@ -9,7 +9,7 @@ public class BulletController : PooledBehaviour
     [SerializeField] private float _deactivateTime;
     [SerializeField] private int _damageValue;
 
-    private Rigidbody _rigidbody;
+    public Rigidbody _rigidbody;
     private WaitForSeconds _wait;
     
     private void Awake()
@@ -26,9 +26,10 @@ public class BulletController : PooledBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            other
-                .GetComponent<PlayerController>()
-                .TakeHit(_damageValue);
+            if (other.gameObject.GetComponent<PlayerController>() == null) return;
+            PlayerController player = other.gameObject.GetComponent<PlayerController>();
+            player.TakeHit(_damageValue);
+            Debug.Log("µ¥¹ÌÁö");
         }
     }
 
@@ -52,7 +53,7 @@ public class BulletController : PooledBehaviour
     public override void ReturnPool()
     {
         Pool.Push(this);
-        gameObject.SetActive(false);
+        StartCoroutine(ActiveFalseRoutine());
     }
 
     public override void OnTaken<T>(T t)
@@ -61,5 +62,12 @@ public class BulletController : PooledBehaviour
         
         transform.LookAt((t as Transform));
         Fire();
+    }
+
+    IEnumerator ActiveFalseRoutine()
+    {
+        WaitForSeconds delay = new WaitForSeconds(5f);
+        yield return delay;
+        gameObject.SetActive(false);
     }
 }
