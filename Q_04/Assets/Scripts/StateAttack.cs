@@ -8,7 +8,9 @@ public class StateAttack : PlayerState
 {
     private float _delay = 2;
     private WaitForSeconds _wait;
-    
+
+    private bool stateChanged = false;
+
     public StateAttack(PlayerController controller) : base(controller)
     {
         
@@ -23,6 +25,7 @@ public class StateAttack : PlayerState
     public override void Enter()
     {
         Controller.StartCoroutine(DelayRoutine(Attack));
+        stateChanged = false;
     }
 
     public override void OnUpdate()
@@ -30,9 +33,15 @@ public class StateAttack : PlayerState
         Debug.Log("Attack On Update");
     }
 
+
     public override void Exit()
     {
-        Machine.ChangeState(StateType.Idle);
+        if (!stateChanged)
+        {
+            stateChanged = true;
+            Machine.ChangeState(StateType.Idle);
+            Debug.Log("기본상태로변경");
+        }
     }
 
     private void Attack()
@@ -45,6 +54,7 @@ public class StateAttack : PlayerState
         IDamagable damagable;
         foreach (Collider col in cols)
         {
+            if (col.GetComponent<IDamagable>() == null) return;
             damagable = col.GetComponent<IDamagable>();
             damagable.TakeHit(Controller.AttackValue);
         }
@@ -52,9 +62,9 @@ public class StateAttack : PlayerState
 
     public IEnumerator DelayRoutine(Action action)
     {
+        Attack();
         yield return _wait;
 
-        Attack();
         Exit();
     }
 

@@ -18,4 +18,7 @@
 제시된 프로젝트에서 발생하는 `문제들을 모두 서술`하고 올바르게 동작하도록 `소스코드를 개선`하시오.
 
 ## 답안
-- 
+- Idamagable인터페이스가 없는 몬스터에서는 null이 발생하기 때문에 if (col.GetComponent<IDamagable>() == null) return;로 예외 처리해줌
+- 2초 뒤 Exit를 실행하고 ChangedState() 함수가 실행되는데 여기서 ChangedState()안에서 또 Exit가 발생해서 또 ChangedState()가 호출되고 거기서 또 Exit이 실행되는 상태가Idle상태로 바뀌지 않고 계속해서 Exit()이 무한 반복되어서 호출되면서
+ 상태를 Idle로 바꾸는 곳까지 못가고 무한 반복되어 Attack상태가 유지됨
+  => bool 변수를 만들어 ChangedState가 한번만 실행되게 해서 정상적으로 Idle로 바꿀 수 있도록 해줌
