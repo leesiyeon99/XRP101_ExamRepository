@@ -15,7 +15,9 @@ public class GameManager : SingletonBehaviour<GameManager>
 
     public void Pause()
     {
-        Time.timeScale = 0f;
+        float curScore = Score;
+        Score = 0;
+        //Time.timeScale = 0f;
     }
 
     public void LoadScene(int buildIndex)

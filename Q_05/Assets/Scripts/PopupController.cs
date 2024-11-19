@@ -8,6 +8,7 @@ public class PopupController : MonoBehaviour
     [SerializeField] private float _deactiveTime;
     private WaitForSeconds _wait;
     private Button _popupButton;
+    Coroutine _popupCoroutine;
 
     [SerializeField] private GameObject _popup;
 
@@ -32,17 +33,23 @@ public class PopupController : MonoBehaviour
     {
         _popup.gameObject.SetActive(true);
         GameManager.Intance.Pause();
-        StartCoroutine(DeactivateRoutine());
+        if (_popupCoroutine == null)
+        {
+            _popupCoroutine = StartCoroutine(DeactivateRoutine());
+        }
     }
 
     private void Deactivate()
     {
         _popup.gameObject.SetActive(false);
+        Debug.Log("비활성화2");
     }
 
     private IEnumerator DeactivateRoutine()
     {
         yield return _wait;
+        Debug.Log("비활성화1");
         Deactivate();
+        _popupCoroutine = null;
     }
 }
